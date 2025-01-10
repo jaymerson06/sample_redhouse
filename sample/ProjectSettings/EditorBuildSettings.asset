@@ -24,7 +24,7 @@ EditorBuildSettings:
     path: Assets/Scenes/4 Livingroom.unity
     guid: 87a57102889361e47adfd1c0e16890f6
   - enabled: 1
-    path: Assets/Scenes/5 Bedroom.unity
+    path: Assets/Scenes/5 Library Room.unity
     guid: c45254466388fda498b48fb43abb0491
   - enabled: 1
     path: Assets/Scenes/6 Secretroom.unity
