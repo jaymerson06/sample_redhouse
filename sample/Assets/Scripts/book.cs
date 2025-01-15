@@ -130,4 +130,3 @@ public class Book : MonoBehaviour
             yield return null;
         }
     }
-}
