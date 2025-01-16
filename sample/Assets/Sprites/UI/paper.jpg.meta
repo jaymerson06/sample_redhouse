@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 040b924abb4fb924e91f340f954b2f44
+guid: 9ca3a885eb1cea444893b43e388d1da2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8158265256486050621
-    second: cover_0
+      213: -1469909079130451432
+    second: paper_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cover_0
+      name: paper_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 981
-        height: 543
+        width: 599
+        height: 845
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d3b1344c60bf73170800000000000000
-      internalID: 8158265256486050621
+      spriteID: 812de4efa75d99be0800000000000000
+      internalID: -1469909079130451432
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      cover_0: 8158265256486050621
+      paper_0: -1469909079130451432
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
