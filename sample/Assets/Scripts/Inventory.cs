@@ -29,10 +29,10 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < slotImages.Length; i++)
         {
-            if (slotImages[i].sprite == null) // Empty slot found
+            if (slotImages[i].sprite == null) // Find an empty slot
             {
-                // Assign the correct sprite based on the itemName
-                if (itemName == "A key from under the mat")
+                // Assign the appropriate sprite based on the item
+                if (itemName == "A key from under the mat.")
                 {
                     slotImages[i].sprite = keySprite;
                 }
@@ -41,14 +41,17 @@ public class Inventory : MonoBehaviour
                     slotImages[i].sprite = paperSprite;
                 }
 
-                slotImages[i].color = Color.white; // Ensure the sprite is visible
-                itemContents[i] = itemName; // Save the item's content for this slot
+                // Ensure the slot's sprite is visible
+                slotImages[i].color = Color.white;
 
-                // Add a click listener to display the item's details
+                // Store the item's content
+                itemContents[i] = itemName;
+
+                // Add click functionality to the slot
                 slotImages[i].GetComponent<Button>().onClick.RemoveAllListeners();
                 slotImages[i].GetComponent<Button>().onClick.AddListener(() => DisplayNote(itemName));
 
-                Debug.Log(itemName + " added to slot " + i);
+                Debug.Log(itemName + " added to inventory slot " + i);
                 return;
             }
         }
