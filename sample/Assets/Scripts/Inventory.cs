@@ -9,6 +9,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Sprite paperSprite;
     [SerializeField] private GameObject notePanel;
     [SerializeField] private TMP_Text noteText;
+    [SerializeField] private Sprite keySprite;
 
     private string[] itemContents; // Stores item names or descriptions
 
@@ -26,26 +27,36 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(string itemName)
     {
-        Debug.Log("AddItem called with: " + itemName);
-
         for (int i = 0; i < slotImages.Length; i++)
         {
-            Debug.Log("Checking slot " + i);
-
             if (slotImages[i].sprite == null) // Empty slot found
             {
-                Debug.Log("Empty slot found at index: " + i);
-                slotImages[i].sprite = paperSprite;
-                slotImages[i].color = Color.white; // Make the slot visible
-                itemContents[i] = itemName; // Save the item's description or name
+                // Assign the correct sprite based on the itemName
+                if (itemName == "A key from under the mat")
+                {
+                    slotImages[i].sprite = keySprite;
+                }
+                else if (itemName == "A note from the grandfather clock.")
+                {
+                    slotImages[i].sprite = paperSprite;
+                }
 
-                Debug.Log($"Paper sprite assigned to slot {i} with item: {itemName}");
+                slotImages[i].color = Color.white; // Ensure the sprite is visible
+                itemContents[i] = itemName; // Save the item's content for this slot
+
+                // Add a click listener to display the item's details
+                slotImages[i].GetComponent<Button>().onClick.RemoveAllListeners();
+                slotImages[i].GetComponent<Button>().onClick.AddListener(() => DisplayNote(itemName));
+
+                Debug.Log(itemName + " added to slot " + i);
                 return;
             }
         }
 
         Debug.Log("Inventory full!");
     }
+
+
 
     private void DisplayNoteFromSlot(int index)
     {
@@ -55,5 +66,21 @@ public class Inventory : MonoBehaviour
             notePanel.SetActive(true);
             noteText.text = itemContents[index];
         }
+    }
+
+    private void DisplayNote(string content)
+    {
+        notePanel.SetActive(true);
+
+        if (content == "A key from under the mat")
+        {
+            noteText.text = "This is a key you found under the mat. It might open something.";
+        }
+        else
+        {
+            noteText.text = content;
+        }
+
+        Debug.Log("Displaying note or key content: " + content);
     }
 }
