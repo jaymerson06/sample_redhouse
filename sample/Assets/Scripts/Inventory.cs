@@ -38,7 +38,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-
     public void AddItem(string itemName)
     {
         for (int i = 0; i < slotImages.Length; i++)
@@ -58,17 +57,8 @@ public class Inventory : MonoBehaviour
                 // Ensure the slot's sprite is visible
                 slotImages[i].color = Color.white;
 
-                // Add click functionality to the slot
-                var button = slotImages[i].GetComponent<Button>();
-                if (button != null) // Check if Button exists
-                {
-                    button.onClick.RemoveAllListeners();
-                    button.onClick.AddListener(() => DisplayNote(itemName));
-                }
-                else
-                {
-                    Debug.LogError($"Slot {i} is missing a Button component!");
-                }
+                // Store the item name
+                itemContents[i] = itemName;
 
                 Debug.Log(itemName + " added to inventory slot " + i);
                 hasInteracted = true; // Mark as interacted to prevent re-interaction
@@ -76,11 +66,8 @@ public class Inventory : MonoBehaviour
             }
         }
 
-
-    Debug.Log("Inventory full!");
+        Debug.Log("Inventory full!");
     }
-
-
 
     private void DisplayNoteFromSlot(int index)
     {
@@ -96,7 +83,7 @@ public class Inventory : MonoBehaviour
     {
         notePanel.SetActive(true);
 
-        if (content == "A key from under the mat")
+        if (content == "A key from under the mat.")
         {
             noteText.text = "This is a key you found under the mat. It might open something.";
         }
@@ -120,4 +107,4 @@ public class Inventory : MonoBehaviour
         AddItem(itemName);
         Debug.Log($"Item '{itemName}' has been collected.");
     }
-
+}
