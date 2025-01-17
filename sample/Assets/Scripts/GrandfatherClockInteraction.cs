@@ -7,7 +7,7 @@ public class GrandfatherClockInteraction : MonoBehaviour
     [SerializeField] private GameObject pressEText;
     [SerializeField] private GameObject notePanel;
     [SerializeField] private TMP_Text noteText;
-    [SerializeField] private string noteContent = "A note from the grandfather clock";
+    [SerializeField] private string noteContent = "A note from the grandfather clock.";
     [SerializeField] private Inventory inventory;
 
     private bool isPlayerNearby = false;

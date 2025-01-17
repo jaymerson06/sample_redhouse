@@ -8,7 +8,7 @@ public class MatInteraction : MonoBehaviour
     [SerializeField] private GameObject obtainedKeyMessage; // Message panel
     [SerializeField] private TMP_Text messageText; // Text to display the message
     [SerializeField] private Inventory inventory; // Reference to the inventory system
-    [SerializeField] private string keyItemName = "A key from under the mat"; // Name of the key
+    [SerializeField] private string keyItemName = "A key from under the mat."; // Name of the key
     [SerializeField] private Sprite keySprite; // Sprite for the key item in the inventory
 
     private bool hasInteracted = false; // To ensure the mat can only be interacted with once
