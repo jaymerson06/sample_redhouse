@@ -36,8 +36,6 @@ public class Inventory : MonoBehaviour
             int index = i; // Capture index for lambda
             inventorySlots[i].onClick.AddListener(() => DisplayNoteFromSlot(index));
         }
-
-
     }
 
 
@@ -59,9 +57,6 @@ public class Inventory : MonoBehaviour
 
                 // Ensure the slot's sprite is visible
                 slotImages[i].color = Color.white;
-
-                // Store the item's content
-                itemContents[i] = itemName;
 
                 // Add click functionality to the slot
                 var button = slotImages[i].GetComponent<Button>();
@@ -125,4 +120,4 @@ public class Inventory : MonoBehaviour
         AddItem(itemName);
         Debug.Log($"Item '{itemName}' has been collected.");
     }
-}
+
