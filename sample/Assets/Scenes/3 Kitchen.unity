@@ -7863,8 +7863,8 @@ MonoBehaviour:
   - {fileID: 325951713}
   - {fileID: 2007406658}
   paperSprite: {fileID: -7004341664222242834, guid: a7ff198797922a549bbc683e058f06b1, type: 3}
-  notePanel: {fileID: 0}
-  noteText: {fileID: 0}
+  notePanel: {fileID: 2141350999}
+  noteText: {fileID: 905020417}
   keySprite: {fileID: 4483504832982471387, guid: 4167fc0b811a1674cbc172632cbe3ca6, type: 3}
 --- !u!4 &1917818539
 Transform:
