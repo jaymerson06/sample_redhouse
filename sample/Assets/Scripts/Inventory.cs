@@ -19,6 +19,7 @@ public class Inventory : MonoBehaviour
         if (slotImages.Length == 0 || inventorySlots.Length == 0)
         {
             Debug.LogError("Inventory slots or slot images are not set up properly!");
+            return;
         }
 
         itemContents = new string[inventorySlots.Length];
@@ -33,11 +34,17 @@ public class Inventory : MonoBehaviour
                 continue;
             }
 
+            var button = inventorySlots[i].GetComponent<Button>();
+            if (button == null)
+            {
+                Debug.LogError($"Inventory slot {i} is missing a Button component!");
+                continue;
+            }
+
             int index = i; // Capture index for lambda
-            inventorySlots[i].onClick.AddListener(() => DisplayNoteFromSlot(index));
+            button.onClick.AddListener(() => DisplayNoteFromSlot(index));
         }
     }
-
 
     public void AddItem(string itemName)
     {
@@ -59,7 +66,7 @@ public class Inventory : MonoBehaviour
                 slotImages[i].color = Color.white;
 
                 // Add click functionality to the slot
-                var button = slotImages[i].GetComponent<Button>();
+                var button = slotImages[i].GetComponentInParent<Button>();
                 if (button != null) // Check if Button exists
                 {
                     button.onClick.RemoveAllListeners();
@@ -76,11 +83,8 @@ public class Inventory : MonoBehaviour
             }
         }
 
-
-    Debug.Log("Inventory full!");
+        Debug.Log("Inventory full!");
     }
-
-
 
     private void DisplayNoteFromSlot(int index)
     {
@@ -120,4 +124,4 @@ public class Inventory : MonoBehaviour
         AddItem(itemName);
         Debug.Log($"Item '{itemName}' has been collected.");
     }
-
+}
