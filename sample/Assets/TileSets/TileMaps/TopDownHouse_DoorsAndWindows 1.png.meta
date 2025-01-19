@@ -772,7 +772,33 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      TopDownHouse_DoorsAndWindows 1_0: 5963886936270511972
+      TopDownHouse_DoorsAndWindows 1_1: -5184907049197826575
+      TopDownHouse_DoorsAndWindows 1_10: 3754007511015451941
+      TopDownHouse_DoorsAndWindows 1_11: -6280015615329888667
+      TopDownHouse_DoorsAndWindows 1_12: 8397965802340982038
+      TopDownHouse_DoorsAndWindows 1_13: -207136477881896275
+      TopDownHouse_DoorsAndWindows 1_14: -2092843906431999971
+      TopDownHouse_DoorsAndWindows 1_15: 5685660518575528461
+      TopDownHouse_DoorsAndWindows 1_16: 2280174368229078151
+      TopDownHouse_DoorsAndWindows 1_17: -7967952868046039364
+      TopDownHouse_DoorsAndWindows 1_18: 5379495773688134003
+      TopDownHouse_DoorsAndWindows 1_19: 295451094685665980
+      TopDownHouse_DoorsAndWindows 1_2: 3585055379301109243
+      TopDownHouse_DoorsAndWindows 1_20: -4422606117912288883
+      TopDownHouse_DoorsAndWindows 1_21: -3046344359792814533
+      TopDownHouse_DoorsAndWindows 1_22: -338836963028604856
+      TopDownHouse_DoorsAndWindows 1_23: 7250703706975336613
+      TopDownHouse_DoorsAndWindows 1_24: -6508741464178210790
+      TopDownHouse_DoorsAndWindows 1_25: 938135648713896399
+      TopDownHouse_DoorsAndWindows 1_3: -8104303214962455666
+      TopDownHouse_DoorsAndWindows 1_4: -5320390513411873113
+      TopDownHouse_DoorsAndWindows 1_5: 5572493971586839235
+      TopDownHouse_DoorsAndWindows 1_6: -2079870215832442553
+      TopDownHouse_DoorsAndWindows 1_7: -3513305541766008551
+      TopDownHouse_DoorsAndWindows 1_8: 5658005763177353783
+      TopDownHouse_DoorsAndWindows 1_9: 6853058667742785333
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
