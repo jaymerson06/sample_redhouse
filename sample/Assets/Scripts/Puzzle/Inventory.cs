@@ -36,7 +36,10 @@ public class Inventory : MonoBehaviour
             int index = i; // Capture index for lambda
             inventorySlots[i].onClick.AddListener(() => DisplayNoteFromSlot(index));
         }
+
+
     }
+
 
     public void AddItem(string itemName)
     {
@@ -53,12 +56,32 @@ public class Inventory : MonoBehaviour
                 {
                     slotImages[i].sprite = paperSprite;
                 }
+                else
+                {
+                    Debug.LogError($"Unknown item: {itemName}");
+                    return;
+                }
 
                 // Ensure the slot's sprite is visible
                 slotImages[i].color = Color.white;
 
-                // Store the item name
+                // Store the item's content
                 itemContents[i] = itemName;
+
+                Debug.Log($"{itemName} added to inventory slot {i}");
+            
+
+                // Add click functionality to the slot
+                var button = slotImages[i].GetComponent<Button>();
+                if (button != null) // Check if Button exists
+                {
+                    button.onClick.RemoveAllListeners();
+                    button.onClick.AddListener(() => DisplayNote(itemName));
+                }
+                else
+                {
+                    Debug.LogError($"Slot {i} is missing a Button component!");
+                }
 
                 Debug.Log(itemName + " added to inventory slot " + i);
                 hasInteracted = true; // Mark as interacted to prevent re-interaction
@@ -68,6 +91,8 @@ public class Inventory : MonoBehaviour
 
         Debug.Log("Inventory full!");
     }
+
+
 
     private void DisplayNoteFromSlot(int index)
     {
@@ -83,7 +108,7 @@ public class Inventory : MonoBehaviour
     {
         notePanel.SetActive(true);
 
-        if (content == "A key from under the mat.")
+        if (content == "A key from under the mat")
         {
             noteText.text = "This is a key you found under the mat. It might open something.";
         }

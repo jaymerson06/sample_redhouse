@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MatInteraction1 : MonoBehaviour
+public class DustyCarpet : MonoBehaviour
 {
     [SerializeField] private GameObject keyImage; // Image of the key to display
     [SerializeField] private GameObject obtainedKeyMessage; // Message panel
@@ -10,11 +10,17 @@ public class MatInteraction1 : MonoBehaviour
     [SerializeField] private Inventory inventory; // Reference to the inventory system
     [SerializeField] private string keyItemName = "A key from under the mat."; // Name of the key
     [SerializeField] private Sprite keySprite; // Sprite for the key item in the inventory
+    [SerializeField] private TimerManager timerManager;
 
     private bool hasInteracted = false; // To ensure the mat can only be interacted with once
 
     void Start()
     {
+        if (timerManager == null)
+        {
+            Debug.LogWarning("TimerManager is not assigned to DustyCarpet!");
+        }
+
         keyImage.SetActive(false);
         obtainedKeyMessage.SetActive(false);
     }
@@ -24,6 +30,10 @@ public class MatInteraction1 : MonoBehaviour
         if (!hasInteracted)
         {
             hasInteracted = true; // Prevent further interaction
+            if (timerManager != null)
+            {
+                timerManager.StopTimer(); // Stop the timer upon interaction
+            }
             ShowKey();
             AddKeyToInventory();
         }
