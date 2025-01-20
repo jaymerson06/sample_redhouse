@@ -4,54 +4,68 @@ using UnityEngine.Video;
 
 public class CheckpointManager : MonoBehaviour
 {
-    [SerializeField] private GameObject cutscenePanel; // Panel for cutscene
-    [SerializeField] private VideoPlayer videoPlayer; // Video player component (optional)
+    [Header("UI Elements")]
+    [SerializeField] private GameObject cutscenePanel;       // Panel for cutscene
     [SerializeField] private GameObject tapToContinueButton; // Button to continue
-    [SerializeField] private Transform checkpointPosition; // Checkpoint position
-    [SerializeField] private Transform player; // Player's Transform
+    [SerializeField] private GameObject gameplayUI;          // Gameplay UI
 
-    private void Start()
+    [Header("Cutscene Elements")]
+    [SerializeField] private VideoPlayer videoPlayer;        // Video player component (optional)
+    [SerializeField] private float defaultCutsceneDuration = 2f; // Default duration if no video clip
+
+    [Header("Player and Checkpoint")]
+    [SerializeField] private Transform checkpointPosition;   // Checkpoint position
+    [SerializeField] private Transform player;               // Player's Transform
+
+    private TimerManager timerManager; // Reference to TimerManager
+
+    private void Awake()
     {
         // Ensure UI elements are hidden initially
-        if (cutscenePanel != null) cutscenePanel.SetActive(false);
-        if (tapToContinueButton != null) tapToContinueButton.SetActive(false);
+        cutscenePanel?.SetActive(false);
+        tapToContinueButton?.SetActive(false);
+
+        // Cache the TimerManager reference
+        timerManager = FindObjectOfType<TimerManager>();
+        if (timerManager == null)
+        {
+            Debug.LogError("TimerManager not found in the scene!");
+        }
     }
 
     public void TriggerCutscene()
     {
-        if (cutscenePanel != null)
+        // Disable gameplay UI
+        if (gameplayUI != null)
         {
-            cutscenePanel.SetActive(true); // Show the cutscene panel
+            gameplayUI.SetActive(false);
+            Debug.Log("Gameplay UI disabled.");
         }
+
+        // Show the cutscene panel
+        cutscenePanel?.SetActive(true);
 
         if (videoPlayer != null && videoPlayer.clip != null)
         {
-            videoPlayer.Play(); // Play the video
-            Invoke(nameof(ShowTapToContinueButton), (float)videoPlayer.clip.length); // Wait for the video to end
+            videoPlayer.Play();
+            Invoke(nameof(ShowTapToContinueButton), (float)videoPlayer.clip.length);
         }
         else
         {
-            Debug.LogWarning("No video clip assigned; assuming default duration.");
-            Invoke(nameof(ShowTapToContinueButton), 2f); // Default cutscene duration
+            Debug.LogWarning("No video clip assigned; using default cutscene duration.");
+            Invoke(nameof(ShowTapToContinueButton), defaultCutsceneDuration);
         }
     }
 
     private void ShowTapToContinueButton()
     {
-        if (videoPlayer != null)
-        {
-            videoPlayer.Stop(); // Stop the video
-        }
-
-        if (tapToContinueButton != null)
-        {
-            tapToContinueButton.SetActive(true); // Show the "Continue" button
-        }
+        videoPlayer?.Stop(); // Stop the video if playing
+        tapToContinueButton?.SetActive(true); // Show the "Tap to Continue" button
     }
 
     public void OnTapToContinue()
     {
-        // Return the player to the checkpoint position
+        // Move player to checkpoint
         if (player != null && checkpointPosition != null)
         {
             player.position = checkpointPosition.position;
@@ -62,21 +76,33 @@ public class CheckpointManager : MonoBehaviour
             Debug.LogError("Player or checkpoint position is not assigned!");
         }
 
-        // Hide the cutscene panel and button
-        if (cutscenePanel != null) cutscenePanel.SetActive(false);
-        if (tapToContinueButton != null) tapToContinueButton.SetActive(false);
+        // Hide cutscene panel and button
+        cutscenePanel?.SetActive(false);
+        tapToContinueButton?.SetActive(false);
+
+        // Enable gameplay UI
+        if (gameplayUI != null)
+        {
+            gameplayUI.SetActive(true);
+            Debug.Log("Gameplay UI re-enabled.");
+        }
 
         // Reset and restart the timer
-        TimerManager timer = FindObjectOfType<TimerManager>();
-        if (timer != null)
+        if (timerManager != null)
         {
-            timer.ResetTimer();
-            timer.StartTimer();
+            timerManager.ResetTimer();
+            timerManager.StartTimer();
             Debug.Log("Timer reset and started.");
         }
-        else
-        {
-            Debug.LogError("TimerManager not found in the scene!");
-        }
+    }
+
+    private void OnEnable()
+    {
+        TimerManager.OnTimerExpired += TriggerCutscene;
+    }
+
+    private void OnDisable()
+    {
+        TimerManager.OnTimerExpired -= TriggerCutscene;
     }
 }

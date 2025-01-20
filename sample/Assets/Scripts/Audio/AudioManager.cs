@@ -47,4 +47,14 @@ public class AudioManager : MonoBehaviour
             yield return null;
         }
     }
+    public void StopMusic()
+    {
+        // Assuming you have an AudioSource for music playback
+        AudioSource musicSource = GetComponent<AudioSource>();
+        if (musicSource != null)
+        {
+            musicSource.Stop();
+        }
+    }
+
 }

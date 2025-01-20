@@ -24,11 +24,11 @@ EditorBuildSettings:
     path: Assets/Scenes/4 Livingroom.unity
     guid: 87a57102889361e47adfd1c0e16890f6
   - enabled: 1
+    path: Assets/Scenes/GhostAnim.unity
+    guid: 36c55a7ab3f5ee040bb601dd6d622505
+  - enabled: 1
     path: Assets/Scenes/5 Library Room.unity
     guid: c45254466388fda498b48fb43abb0491
-  - enabled: 1
-    path: Assets/Scenes/6 Secretroom.unity
-    guid: 1bbcd6c32f89c1141b094ae7babd2d28
   - enabled: 1
     path: Assets/Scenes/7 Outro.unity
     guid: e847ee36d4004a74084b769b49c7da1a
