@@ -1,13 +1,12 @@
-using UnityEngine.SceneManagement;
 using UnityEngine;
-using Unity.Cinemachine;
+using UnityEngine.SceneManagement;
 
-
-public class Door : MonoBehaviour
+public class SalaDoor : MonoBehaviour
 {
-    public string targetScene; // Name of the scene to load
-    public Vector3 spawnPosition; // Position where the player spawns in the target scene
- 
+    [SerializeField] private string targetScene; // Name of the scene to load
+    [SerializeField] private Vector3 spawnPosition; // Position where the player spawns in the target scene
+    [SerializeField] private GameObject pressEText;
+
 
     public Key playerKey;
     public bool isLocked = true;
@@ -15,8 +14,9 @@ public class Door : MonoBehaviour
 
     private void Start()
     {
+        pressEText.SetActive(false);
         isLocked = true;
-        
+
     }
 
     void Update()
@@ -58,7 +58,24 @@ public class Door : MonoBehaviour
         if (other.CompareTag("Player")) // Ensure it's the player
         {
             isPlayerNearby = true;
+            if (pressEText != null)
+            {
+                pressEText.SetActive(true); // Show "Press E" text
+            }
             Debug.Log("Press 'E' to interact with the door.");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerNearby = false;
+            if (pressEText != null)
+            {
+                pressEText.SetActive(false); // Hide "Press E" text
+            }
+            Debug.Log("Player left the door.");
         }
     }
 

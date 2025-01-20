@@ -1,22 +1,22 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
-public class Fridge : MonoBehaviour
+public class DiskPlayer : MonoBehaviour
 {
-    public GameObject noteUI; // UI to display the note with instructions
     [SerializeField] private GameObject pressEText; // UI Text for "Press E"
-    [SerializeField] private string noteContent = "A note from the fridge."; // The content of the note
-    [SerializeField] private KitchenInventory inventory; // Reference to the inventory script
+    [SerializeField] private GameObject notePanel; // Panel for displaying the note
+    [SerializeField] private TMP_Text noteText; // Text for the note content
+    [SerializeField] private string noteContent = "A note from the diskplayer."; // The content of the note
+    [SerializeField] private LivingRoomInventory inventory; // Reference to the inventory script
     [SerializeField] private TimerManager timerManager;
 
-    private bool isPlayerNear = false;
+    private bool isPlayerNearby = false;
     private bool hasInteracted = false; // Flag to prevent multiple interactions
 
     void Start()
     {
         pressEText.SetActive(false);
-        noteUI.SetActive(false);
-       
+        notePanel.SetActive(false);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -24,11 +24,11 @@ public class Fridge : MonoBehaviour
         if (collision.CompareTag("Player") && !hasInteracted)
         {
             pressEText.SetActive(true); // Show "Press E" text
-            isPlayerNear = true;
+            isPlayerNearby = true;
 
             if (Input.GetKeyDown(KeyCode.E)) // Player presses 'E' to interact
             {
-                OpenFridge();
+                InteractWithDisk();
             }
         }
     }
@@ -38,14 +38,13 @@ public class Fridge : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             pressEText.SetActive(false); // Hide "Press E" text when player leaves
-            isPlayerNear = false;
+            isPlayerNearby = false;
         }
     }
 
-    void OpenFridge()
+    private void InteractWithDisk()
     {
-        // Display the note UI
-        ShowNote();
+        ShowNote(); // Display the note
         hasInteracted = true; // Mark interaction as completed
         pressEText.SetActive(false); // Hide "Press E" text
 
@@ -54,14 +53,13 @@ public class Fridge : MonoBehaviour
         {
             timerManager.StartTimer();
         }
-
-
     }
 
     private void ShowNote()
     {
-        noteUI.SetActive(true); // Show the note panel
+        notePanel.SetActive(true); // Show the note panel
+        noteText.text = noteContent; // Set the note content
         inventory.AddItem(noteContent); // Add the note to the inventory
-        Debug.Log("Note from the grandfather clock added to inventory.");
+        Debug.Log("Note from the disk added to inventory.");
     }
 }

@@ -1,18 +1,31 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PINUnlock : MonoBehaviour
 {
-    public string[] validDigits = { "3", "1", "2", "4" }; // Correct digits
+    public string correctPIN = "3124"; // Correct PIN
+    [SerializeField] private GameObject pressFText; // "Press E" UI Text
+    [SerializeField] private GameObject keypadUI; // Keypad UI
+    [SerializeField] private TMP_Text enteredDigitsText; // Text to display entered digits
+    [SerializeField] private TMP_Text messageText; // Text to display messages
+    [SerializeField] private TimerManager timerManager;
     public GameObject door; // Reference to the door
-    public GameObject keypadUI; // UI for keypad entry
 
-    private string enteredDigits = "";
-    private bool isPlayerNear = false; // Track if the player is near the keypad
+    private string enteredDigits = ""; // To store entered digits
+    private bool isPlayerNear = false; // Check if the player is near the keypad
+
+    void Start()
+    {
+        pressFText.SetActive(false);
+        keypadUI.SetActive(false);
+        messageText.text = "";
+        enteredDigitsText.text = ""; // Clear UI text initially
+    }
 
     void Update()
     {
-        // Check if the player is near and presses 'E' to interact
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerNear && Input.GetKeyDown(KeyCode.F))
         {
             OpenKeypadUI();
         }
@@ -20,66 +33,77 @@ public class PINUnlock : MonoBehaviour
 
     void OpenKeypadUI()
     {
+        Debug.Log("Opening Keypad UI.");
         keypadUI.SetActive(true); // Show the keypad UI
-        Time.timeScale = 0f; // Pause the game
     }
 
     public void AddDigit(string digit)
     {
-        if (enteredDigits.Length < 4)
+        if (enteredDigits.Length < 4) // Allow only up to 4 digits
         {
             enteredDigits += digit;
-        }
-
-        if (enteredDigits.Length == 4)
-        {
-            CheckPIN();
+            enteredDigitsText.text = enteredDigits; // Update the displayed digits
         }
     }
 
-    void CheckPIN()
+    public void CheckPIN()
     {
-        // Check if entered digits contain all validDigits
-        foreach (string validDigit in validDigits)
+        if (enteredDigits == correctPIN)
         {
-            if (!enteredDigits.Contains(validDigit))
-            {
-                Debug.Log("Incorrect PIN!");
-                enteredDigits = ""; // Reset on failure
-                return;
-            }
+            Debug.Log("Correct PIN! Door unlocked.");
+            pressFText.SetActive(false);
+            messageText.text = "Door Unlocked!";
+            timerManager.StopTimer();
+            UnlockDoor();
+        }
+        else
+        {
+            Debug.Log("Incorrect PIN!");
+            messageText.text = "Incorrect PIN";
         }
 
-        Debug.Log("Correct PIN! Door unlocked.");
-        UnlockDoor();
+        enteredDigits = ""; // Reset the entered digits after checking
+        enteredDigitsText.text = ""; // Clear the displayed digits
     }
 
     void UnlockDoor()
     {
-        // Logic to unlock the door
-        door.GetComponent<KitchenDoor>().Unlock();
+        if (door != null)
+        {
+            door.GetComponent<KitchenDoor>()?.Unlock(); // Unlock the door
+        }
+        else
+        {
+            Debug.LogError("Door reference is missing!");
+        }
+
+        CloseKeypadUI(); // Close the keypad UI after unlocking
     }
 
     public void CloseKeypadUI()
     {
         keypadUI.SetActive(false); // Hide the keypad UI
-        Time.timeScale = 1f; // Resume the game
+        messageText.text = ""; // Clear the message text
+   
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other) // Updated to 2D
     {
         if (other.CompareTag("Player"))
         {
+            pressFText.SetActive(true); // Show "Press E" text
             isPlayerNear = true;
-            Debug.Log("Press 'E' to interact with the keypad.");
+            Debug.Log("Player entered the keypad zone. Press 'F' to interact.");
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other) // Updated to 2D
     {
         if (other.CompareTag("Player"))
         {
+            pressFText.SetActive(false); // Hide "Press E" text
             isPlayerNear = false;
+            Debug.Log("Player left the keypad zone.");
         }
     }
 }

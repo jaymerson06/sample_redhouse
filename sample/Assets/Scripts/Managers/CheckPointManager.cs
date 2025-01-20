@@ -4,43 +4,69 @@ using UnityEngine.Video;
 
 public class CheckpointManager : MonoBehaviour
 {
-    [SerializeField] private GameObject cutscenePanel; // Panel to hold the video
-    [SerializeField] private VideoPlayer videoPlayer; // Video player component
+    [SerializeField] private GameObject cutscenePanel; // Panel to hold the video or animation
+    [SerializeField] private VideoPlayer videoPlayer; // Video player component (optional)
     [SerializeField] private GameObject tapToContinueButton; // Button to continue
     [SerializeField] private Transform checkpointPosition; // Player's checkpoint position
     [SerializeField] private Transform player; // Player's Transform
 
-    private void OnEnable()
+    private void Start()
     {
-        TimerManager.OnTimerExpired += TriggerCutscene;
+        // Ensure cutscenePanel and tapToContinueButton are initially hidden
+        if (cutscenePanel != null) cutscenePanel.SetActive(false);
+        if (tapToContinueButton != null) tapToContinueButton.SetActive(false);
     }
 
-    private void OnDisable()
+    public void TriggerCutscene()
     {
-        TimerManager.OnTimerExpired -= TriggerCutscene;
-    }
+        if (cutscenePanel != null)
+        {
+            cutscenePanel.SetActive(true);
+        }
 
-    private void TriggerCutscene()
-    {
-        cutscenePanel.SetActive(true);
-        videoPlayer.Play(); // Start the cutscene video
-        Invoke(nameof(ShowTapToContinueButton), (float)videoPlayer.clip.length); // Show button after video ends
+        if (videoPlayer != null)
+        {
+            videoPlayer.Play(); // Start the cutscene video
+            Invoke(nameof(ShowTapToContinueButton), (float)videoPlayer.clip.length); // Show button after video ends
+        }
+        else
+        {
+            // Assume cutscene duration is 2 seconds if no video is used
+            Invoke(nameof(ShowTapToContinueButton), 2f);
+        }
     }
 
     private void ShowTapToContinueButton()
     {
-        videoPlayer.Stop(); // Stop the video after it ends
-        tapToContinueButton.SetActive(true); // Show the continue button
+        if (videoPlayer != null)
+        {
+            videoPlayer.Stop(); // Stop the video after it ends
+        }
+
+        if (tapToContinueButton != null)
+        {
+            tapToContinueButton.SetActive(true); // Show the continue button
+        }
     }
 
     public void OnTapToContinue()
     {
         // Return player to checkpoint
-        player.position = checkpointPosition.position;
+        if (player != null && checkpointPosition != null)
+        {
+            player.position = checkpointPosition.position;
+        }
 
         // Hide cutscene and button
-        cutscenePanel.SetActive(false);
-        tapToContinueButton.SetActive(false);
+        if (cutscenePanel != null)
+        {
+            cutscenePanel.SetActive(false);
+        }
+
+        if (tapToContinueButton != null)
+        {
+            tapToContinueButton.SetActive(false);
+        }
 
         // Reset the timer
         TimerManager timer = Object.FindFirstObjectByType<TimerManager>();
