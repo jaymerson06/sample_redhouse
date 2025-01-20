@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class KitchenDoor : MonoBehaviour
@@ -10,9 +11,20 @@ public class KitchenDoor : MonoBehaviour
     private bool isUnlocked = false; // Tracks if the door is unlocked
     private bool isPlayerNearby = false; // Tracks if the player is near the door
 
+    [SerializeField] private AudioClip unlockSFX; // Sound effect for unlocking
+    [SerializeField] private AudioClip lockedSFX; // Sound effect for failed unlock
+    private AudioSource audioSource; // Reference to the AudioSource
+
+
     void Start()
     {
         pressEText.SetActive(false); // Ensure "Press E" text is hidden at the start
+        audioSource = GetComponent<AudioSource>();
+
+        if (audioSource == null)
+        {
+            Debug.LogError("No AudioSource component found on the door object!");
+        }
     }
 
     public void Unlock()
@@ -24,7 +36,7 @@ public class KitchenDoor : MonoBehaviour
 
     void Update()
     {
-        if (isUnlocked && isPlayerNearby && Input.GetKeyDown(KeyCode.E))
+        if (isUnlocked && isPlayerNearby && Input.GetKeyDown(KeyCode.E)) 
         {
             // Logic to transition to the next scene
             GetComponent<Collider2D>().enabled = false; // Disable the door collider to allow passage
@@ -34,6 +46,11 @@ public class KitchenDoor : MonoBehaviour
 
             SceneManager.LoadScene(targetScene); // Load the target scene
         }
+        else if (!isUnlocked && isPlayerNearby && Input.GetKeyDown(KeyCode.E) && audioSource)
+        {
+            PlayLockedSFX();
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -59,6 +76,15 @@ public class KitchenDoor : MonoBehaviour
                 pressEText.SetActive(false); // Hide "Press E" text
             }
             Debug.Log("Player left the door.");
+        }
+    }
+
+    private void PlayLockedSFX()
+    {
+        // Play locked sound
+        if (audioSource && lockedSFX)
+        {
+            audioSource.PlayOneShot(lockedSFX);
         }
     }
 }

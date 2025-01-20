@@ -9,11 +9,20 @@ public class Fridge : MonoBehaviour
     [SerializeField] private KitchenInventory inventory; // Reference to the inventory script
     [SerializeField] private TimerManager timerManager;
 
+    [SerializeField] private AudioClip interactionSFX; // Sound effect for object interaction
+    private AudioSource audioSource;
+
     private bool isPlayerNear = false;
     private bool hasInteracted = false; // Flag to prevent multiple interactions
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>(); // Add AudioSource if not already present
+        }
+
         pressEText.SetActive(false);
         noteUI.SetActive(false);
        
@@ -28,6 +37,7 @@ public class Fridge : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E)) // Player presses 'E' to interact
             {
+                audioSource.PlayOneShot(interactionSFX);
                 OpenFridge();
             }
         }

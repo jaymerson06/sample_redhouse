@@ -12,6 +12,9 @@ public class PINUnlock : MonoBehaviour
     [SerializeField] private TimerManager timerManager;
     public GameObject door; // Reference to the door
 
+    [SerializeField] private AudioClip interactionSFX; // Sound effect for object interaction
+    private AudioSource audioSource;
+
     private string enteredDigits = ""; // To store entered digits
     private bool isPlayerNear = false; // Check if the player is near the keypad
 
@@ -21,12 +24,18 @@ public class PINUnlock : MonoBehaviour
         keypadUI.SetActive(false);
         messageText.text = "";
         enteredDigitsText.text = ""; // Clear UI text initially
+
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>(); // Add AudioSource if not already present
+        }
     }
 
     void Update()
     {
         if (isPlayerNear && Input.GetKeyDown(KeyCode.F))
         {
+            audioSource.PlayOneShot(interactionSFX);
             OpenKeypadUI();
         }
     }

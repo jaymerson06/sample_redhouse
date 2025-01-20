@@ -4,15 +4,15 @@ using UnityEngine.Video;
 
 public class CheckpointManager : MonoBehaviour
 {
-    [SerializeField] private GameObject cutscenePanel; // Panel to hold the video or animation
+    [SerializeField] private GameObject cutscenePanel; // Panel for cutscene
     [SerializeField] private VideoPlayer videoPlayer; // Video player component (optional)
     [SerializeField] private GameObject tapToContinueButton; // Button to continue
-    [SerializeField] private Transform checkpointPosition; // Player's checkpoint position
+    [SerializeField] private Transform checkpointPosition; // Checkpoint position
     [SerializeField] private Transform player; // Player's Transform
 
     private void Start()
     {
-        // Ensure cutscenePanel and tapToContinueButton are initially hidden
+        // Ensure UI elements are hidden initially
         if (cutscenePanel != null) cutscenePanel.SetActive(false);
         if (tapToContinueButton != null) tapToContinueButton.SetActive(false);
     }
@@ -21,18 +21,18 @@ public class CheckpointManager : MonoBehaviour
     {
         if (cutscenePanel != null)
         {
-            cutscenePanel.SetActive(true);
+            cutscenePanel.SetActive(true); // Show the cutscene panel
         }
 
-        if (videoPlayer != null)
+        if (videoPlayer != null && videoPlayer.clip != null)
         {
-            videoPlayer.Play(); // Start the cutscene video
-            Invoke(nameof(ShowTapToContinueButton), (float)videoPlayer.clip.length); // Show button after video ends
+            videoPlayer.Play(); // Play the video
+            Invoke(nameof(ShowTapToContinueButton), (float)videoPlayer.clip.length); // Wait for the video to end
         }
         else
         {
-            // Assume cutscene duration is 2 seconds if no video is used
-            Invoke(nameof(ShowTapToContinueButton), 2f);
+            Debug.LogWarning("No video clip assigned; assuming default duration.");
+            Invoke(nameof(ShowTapToContinueButton), 2f); // Default cutscene duration
         }
     }
 
@@ -40,39 +40,43 @@ public class CheckpointManager : MonoBehaviour
     {
         if (videoPlayer != null)
         {
-            videoPlayer.Stop(); // Stop the video after it ends
+            videoPlayer.Stop(); // Stop the video
         }
 
         if (tapToContinueButton != null)
         {
-            tapToContinueButton.SetActive(true); // Show the continue button
+            tapToContinueButton.SetActive(true); // Show the "Continue" button
         }
     }
 
     public void OnTapToContinue()
     {
-        // Return player to checkpoint
+        // Return the player to the checkpoint position
         if (player != null && checkpointPosition != null)
         {
             player.position = checkpointPosition.position;
+            Debug.Log("Player returned to checkpoint.");
         }
-
-        // Hide cutscene and button
-        if (cutscenePanel != null)
+        else
         {
-            cutscenePanel.SetActive(false);
+            Debug.LogError("Player or checkpoint position is not assigned!");
         }
 
-        if (tapToContinueButton != null)
-        {
-            tapToContinueButton.SetActive(false);
-        }
+        // Hide the cutscene panel and button
+        if (cutscenePanel != null) cutscenePanel.SetActive(false);
+        if (tapToContinueButton != null) tapToContinueButton.SetActive(false);
 
-        // Reset the timer
-        TimerManager timer = Object.FindFirstObjectByType<TimerManager>();
+        // Reset and restart the timer
+        TimerManager timer = FindObjectOfType<TimerManager>();
         if (timer != null)
         {
             timer.ResetTimer();
+            timer.StartTimer();
+            Debug.Log("Timer reset and started.");
+        }
+        else
+        {
+            Debug.LogError("TimerManager not found in the scene!");
         }
     }
 }

@@ -12,6 +12,9 @@ public class DustyCarpet : MonoBehaviour
     [SerializeField] private Sprite keySprite; // Sprite for the key item in the inventory
     [SerializeField] private TimerManager timerManager;
 
+    [SerializeField] private AudioClip interactionSFX; // Sound effect for object interaction
+    private AudioSource audioSource;
+
     private bool hasInteracted = false; // To ensure the mat can only be interacted with once
 
     void Start()
@@ -23,6 +26,13 @@ public class DustyCarpet : MonoBehaviour
 
         keyImage.SetActive(false);
         obtainedKeyMessage.SetActive(false);
+
+        // Initialize the AudioSource if it's not already attached
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>(); // Add AudioSource if not already present
+        }
     }
 
     private void OnMouseDown()
@@ -30,12 +40,14 @@ public class DustyCarpet : MonoBehaviour
         if (!hasInteracted)
         {
             hasInteracted = true; // Prevent further interaction
+
             if (timerManager != null)
             {
                 timerManager.StopTimer(); // Stop the timer upon interaction
             }
             ShowKey();
             AddKeyToInventory();
+            audioSource.PlayOneShot(interactionSFX); // Play the interaction sound
         }
     }
 
@@ -59,4 +71,6 @@ public class DustyCarpet : MonoBehaviour
         keyImage.SetActive(false);
         obtainedKeyMessage.SetActive(false);
     }
+
+    // Removed OnTriggerEnter2D, as the interaction is now solely based on a mouse click
 }
