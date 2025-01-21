@@ -9,7 +9,6 @@ public class PINUnlock : MonoBehaviour
     [SerializeField] private GameObject keypadUI; // Keypad UI
     [SerializeField] private TMP_Text enteredDigitsText; // Text to display entered digits
     [SerializeField] private TMP_Text messageText; // Text to display messages
-    [SerializeField] private TimerManager timerManager;
     public GameObject door; // Reference to the door
 
     [SerializeField] private AudioClip interactionSFX; // Sound effect for object interaction
@@ -62,7 +61,7 @@ public class PINUnlock : MonoBehaviour
             Debug.Log("Correct PIN! Door unlocked.");
             pressFText.SetActive(false);
             messageText.text = "Door Unlocked!";
-            timerManager.StopTimer();
+
             UnlockDoor();
         }
         else

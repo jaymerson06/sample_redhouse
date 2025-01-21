@@ -1,5 +1,6 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using TMPro;
 
 public class Door : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Door : MonoBehaviour
     [SerializeField] private AudioClip lockedSFX; // Sound effect for failed unlock
     [SerializeField] private GameObject targetObject;
     [SerializeField] private GameObject pressEText; // UI text for "Press E"
+    [SerializeField] private TextMeshProUGUI interactionText;
+
 
     private AudioSource audioSource; // Reference to the AudioSource
 
@@ -30,7 +33,8 @@ public class Door : MonoBehaviour
             Debug.LogError("No AudioSource component found on the door object!");
         }
 
-        
+
+
     }
 
     void Update()
@@ -38,6 +42,10 @@ public class Door : MonoBehaviour
         // Check if the player presses 'E' and is near the door
         if (isPlayerNearby && Input.GetKeyDown(KeyCode.E))
         {
+
+            if (interactionText != null)
+                interactionText.gameObject.SetActive(false);
+
             if (playerKey.hasKey)
             {
                 UnlockDoor();
@@ -125,6 +133,8 @@ public class Door : MonoBehaviour
             {
                 pressEText.SetActive(true); // Show "Press E" text
             }
+
+
             Debug.Log("Press 'E' to interact with the door.");
         }
     }
@@ -138,6 +148,8 @@ public class Door : MonoBehaviour
             {
                 pressEText.SetActive(false); // Hide "Press E" text
             }
+            
+
             Debug.Log("Player left the door.");
         }
     }

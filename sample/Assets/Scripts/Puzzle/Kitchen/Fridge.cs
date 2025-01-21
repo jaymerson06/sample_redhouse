@@ -7,7 +7,6 @@ public class Fridge : MonoBehaviour
     [SerializeField] private GameObject pressEText; // UI Text for "Press E"
     [SerializeField] private string noteContent = "A note from the fridge."; // The content of the note
     [SerializeField] private KitchenInventory inventory; // Reference to the inventory script
-    [SerializeField] private TimerManager timerManager;
 
     [SerializeField] private AudioClip interactionSFX; // Sound effect for object interaction
     private AudioSource audioSource;
@@ -60,10 +59,6 @@ public class Fridge : MonoBehaviour
         pressEText.SetActive(false); // Hide "Press E" text
 
         // Start the timer after interaction
-        if (timerManager != null)
-        {
-            timerManager.StartTimer();
-        }
 
 
     }

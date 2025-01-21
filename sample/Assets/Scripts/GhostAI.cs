@@ -8,6 +8,7 @@ public class GhostAI : MonoBehaviour
     public float speed = 3f; // Speed of the ghost
 
     public Animator animator; // Animator for movement animations
+    [SerializeField] private GameObject cutscenePanel;
     public VideoPlayer cutscenePlayer; // Assign in Inspector for the cutscene
     public GameObject tapToContinueButton; // Assign in Inspector for the "Tap to Continue" UI
     public AudioManager audioManager; // Reference to your AudioManager
@@ -16,6 +17,8 @@ public class GhostAI : MonoBehaviour
 
     private void Start()
     {
+        cutscenePanel?.SetActive(false);
+
         if (animator == null)
         {
             animator = GetComponent<Animator>();
@@ -57,7 +60,7 @@ public class GhostAI : MonoBehaviour
 
     private void TriggerCutscene()
     {
-        isPlayingCutscene = true;
+        cutscenePanel?.SetActive(true);
 
         // Stop background music
         if (audioManager != null)
